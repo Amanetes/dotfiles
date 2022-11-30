@@ -16,6 +16,9 @@ Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
 " Alignment
 Plug 'junegunn/vim-easy-align'
+"fzf
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 " git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -43,25 +46,41 @@ filetype indent on
 
 set encoding=UTF-8
 
-" Enable syntax highlighting
+" Enable Syntax Highlighting
 syntax enable
+syntax on
 
 " Vim-airline font config
 let g:airline_powerline_fonts = 1
 
 set mouse=a
-set tabstop=4
-set softtabstop=4
+" Set the Tab to 2 spaces
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set smarttab
 set autoindent
 set number
 set relativenumber
 set numberwidth=2
-set si "Smart indent
+set smartindent
 set fileformats+=mac
 set ruler
 set laststatus=2
-set nowrap "don't wrap the lines
+"don't wrap the lines
+set nowrap
+set wildmenu
+set hidden
+set hlsearch
+set incsearch
+set showcmd
+
+"set primary clipboard
+set clipboard=unnamedplus
+
+" folding
+set foldmethod=syntax
+set nofoldenable
 
 """ Theme config
 set termguicolors
@@ -73,8 +92,19 @@ nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 
+let g:NERDTreeGitStatusWithFlags = 1
+let g:NERDTreeShowHidden = 1
+
 " Start NERDTree and put the cursor back in the other window.
 autocmd VimEnter * NERDTree | wincmd p
+
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+" WebdevIcons
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_nerdtree = 1
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -102,9 +132,37 @@ let g:gitgutter_sign_modified_removed = emoji#for('collision')
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 let g:rainbow#blacklist = [233, 234]
+
+" Toggle RainbowParentheses at nvim start
 autocmd VimEnter * RainbowParentheses
+
 " Easy align
 "Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+" Markdown and Journal
+autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
+" fzf settings
+let g:fzf_layout = { 'window': { 'width': 0.99, 'height': 0.99 } }
+
+" Leader key
+let mapleader=','
+
+" ===MAPPINGS===
+
+" Undo
+nnoremap <silent> <C-z> :u<CR>
+" Close Neovim
+nnoremap <silent> <C-q> :qa!<CR>
+" Close buffer
+nmap <leader>q :bw<CR>
+" Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
+

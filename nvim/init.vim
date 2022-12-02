@@ -16,22 +16,33 @@ Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
 " Alignment
 Plug 'junegunn/vim-easy-align'
-"fzf
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+" Search
+Plug 'nvim-telescope/telescope.nvim'
+" Needed for telescope
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
 " git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
+Plug 'jreybert/vimagit'
 " for closing do end like structures
 Plug 'tpope/vim-endwise'
-" other
+" Other
 Plug 'preservim/nerdcommenter'
 Plug 'alvan/vim-closetag'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'tpope/vim-surround'
+Plug 'AndrewRadev/tagalong.vim'
+let g:tagalong_additional_filetypes = ['javascript']
 " for languages
 Plug 'vim-ruby/vim-ruby'
 Plug 'slim-template/vim-slim'
 Plug 'tpope/vim-rails'
 Plug 'ap/vim-css-color'
+Plug 'mattn/emmet-vim'
+" for Rspec
+Plug 'thoughtbot/vim-rspec'
+Plug 'rlue/vim-fold-rspec'
 " visual theme
 Plug 'dracula/vim', { 'as': 'dracula' }
 " icons support for airline and nerdtree
@@ -123,11 +134,11 @@ map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 map <leader>t<leader> :tabnext
 
-" Using Emojis as GitGutter symbols
-let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
-let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
-let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
-let g:gitgutter_sign_modified_removed = emoji#for('collision')
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Git gutter (Git diff)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:gitgutter_enabled=1
+
 " Rainbow colors customization
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
@@ -142,12 +153,13 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
+" HTML, XML, Jinja
+autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
 " Markdown and Journal
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
-
-" fzf settings
-let g:fzf_layout = { 'window': { 'width': 0.99, 'height': 0.99 } }
 
 " Leader key
 let mapleader=','
@@ -166,3 +178,10 @@ nnoremap  <leader>Y  "+yg_
 nnoremap  <leader>y  "+y
 nnoremap  <leader>yy  "+yy
 
+" Telescope
+nnoremap <leader>ff <cmd>Telescope find_files<CR>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fc <cmd>Telescope colorscheme<cr>
+nnoremap <leader>f/ <cmd>Telescope current_buffer_fuzzy_find<cr>

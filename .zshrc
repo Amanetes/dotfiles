@@ -71,7 +71,7 @@ ENABLE_CORRECTION="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git bundler docker docker-compose gem ruby brew)
+plugins=(git ruby rails yarn bundler docker docker-compose brew macos z node)
 
 source $ZSH/oh-my-zsh.sh
 

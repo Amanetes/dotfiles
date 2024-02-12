@@ -17,7 +17,7 @@ ZSH_THEME="robbyrussell"
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
-CASE_SENSITIVE="true"
+# CASE_SENSITIVE="true"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
@@ -41,7 +41,7 @@ CASE_SENSITIVE="true"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # You can also set it to another string to have that shown instead of the default red dots.
@@ -71,7 +71,7 @@ ENABLE_CORRECTION="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git ruby rails yarn bundler docker docker-compose brew macos z node)
+plugins=(git bundler docker docker-compose gem ruby rails brew)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -102,7 +102,18 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH=/opt/homebrew/bin:$PATH
-alias python=/usr/bin/python3
-
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
+
+
+# Functions
+
+krc() {
+  kubectl -n namespace-staging exec -it $(kubectl -n name-staging get pods | grep name-api-staging | grep -v 'redis\|sidekiq\|anycable\|exporter\|sneakers' | head -1 | awk '{print $1;}') -- bundle exec rails c -- --noautocomplete
+}
+
+krsh() {
+  kubectl -n namespace-staging exec -it $(kubectl -n name-staging get pods | grep name-api-staging | grep -v 'redis\|sidekiq\|anycable\|exporter\|sneakers' | head -1 | awk '{print $1;}') -- bash
+}
